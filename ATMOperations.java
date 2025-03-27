@@ -42,11 +42,11 @@ public class ATMOperations extends JoniATM{
             System.out.println("Insufficient balance!");
         }
     }
-
+    int attempts = 1;
     //change ATM Pin in ATM @override changeATMPin() in ATMOperations()
     public void changeATMPin() {
         System.out.println("To change ATM Pin..");
-        int attempts = 1;
+
         //Enter accno and ifsc code
         while (attempts <= MAX_ATTEMPTS) {
             System.out.println("Enter your JONI Bank Account Number: ");
@@ -110,108 +110,102 @@ public class ATMOperations extends JoniATM{
     double wamount;
         //ATM related operations
     public void atmOperations() {
-        boolean exit=false;
-            char con=' ';
-            do{
-                System.out.println("-- JONI ATM Operations --");
-                System.out.println("Press 1->> Deposit Amount, Press 2--> WithDraw Amount, Press 3--> Check Balance, Press 4 --> Calculate Interest, Press 5 --> Account Details, Press 6 --> Change Phone Number, Press 7 --> Change ATM Pin , Press 8 --> Exit ");
-                decision = sc.nextInt();
-                switch (decision) {
-                    case 1:
-                        System.out.println("Enter the amount to be deposit: ");
-                        damount = sc.nextDouble();
-                        super.depositAmount(damount);
-                        lastOperation="Deposit Amount";
-                        break;
+        boolean exit = false;
+        char con = ' ';
+        do {
+            System.out.println("-- JONI ATM Operations --");
+            System.out.println("Press 1->> Deposit Amount, Press 2--> WithDraw Amount, Press 3--> Check Balance, Press 4 --> Calculate Interest, Press 5 --> Account Details, Press 6 --> Change Phone Number, Press 7 --> Change ATM Pin , Press 8 --> Exit ");
+            decision = sc.nextInt();
+            switch (decision) {
+                case 1:
+                    System.out.println("Enter the amount to be deposit: ");
+                    damount = sc.nextDouble();
+                    super.depositAmount(damount);
+                    lastOperation = "Deposit Amount";
+                    break;
 
-                    case 2:
-                        if(ca instanceof CurrentAccount) {
-                            if (super.getBalance() <= CurrentAccount.MIN_BALANCE && wamount <= CurrentAccount.MIN_BALANCE) {
-                                System.out.println("Initial balance is already LOW! You can't withdraw. Deposit some amount to continue withdrawal.");
-                            }
-                            else {
-                                if (balance > 0) {
-                                    System.out.println("Enter the amount to be withdraw: ");
-                                    double wamount = sc.nextDouble();
-                                    ca.withdrawAmount(wamount);
-                                    lastOperation = "WithDraw Amount";
-                                }
-                                else {
-                                    System.out.println("InSufficient balance. Deposit Some Amount to continue withdraw");
-                                }
-                            }
-                        }
-                        else{
+                case 2:
+                    if (ca instanceof CurrentAccount) {
+                        if (super.getBalance() <= CurrentAccount.MIN_BALANCE && wamount <= CurrentAccount.MIN_BALANCE) {
+                            System.out.println("Initial balance is already LOW! You can't withdraw. Deposit some amount to continue withdrawal.");
+                        } else {
                             if (balance > 0) {
                                 System.out.println("Enter the amount to be withdraw: ");
                                 double wamount = sc.nextDouble();
-                                withdrawAmount(wamount);
+                                ca.withdrawAmount(wamount);
                                 lastOperation = "WithDraw Amount";
-                            }
-                            else {
+                            } else {
                                 System.out.println("InSufficient balance. Deposit Some Amount to continue withdraw");
                             }
                         }
-                        break;
-                    case 3:
-                        if(ca instanceof CurrentAccount){
-                            ca.checkBalance();
-                            lastOperation="Check Balance";
+                    } else {
+                        if (balance > 0) {
+                            System.out.println("Enter the amount to be withdraw: ");
+                            double wamount = sc.nextDouble();
+                            withdrawAmount(wamount);
+                            lastOperation = "WithDraw Amount";
+                        } else {
+                            System.out.println("InSufficient balance. Deposit Some Amount to continue withdraw");
                         }
-                        else{
-                            sa.checkBalance();
-                            lastOperation="Check Balance";
-                        }
-                        break;
+                    }
+                    break;
+                case 3:
+                    if (ca instanceof CurrentAccount) {
+                        ca.checkBalance();
+                        lastOperation = "Check Balance";
+                    } else {
+                        sa.checkBalance();
+                        lastOperation = "Check Balance";
+                    }
+                    break;
 
-                    case 4:
-                        if(ca instanceof CurrentAccount) {
-                            ca.calculateInterestRate();
-                            lastOperation="Calculate Interest";
-                        }
-                        else{
-                            sa.calculateInterestRate();
-                            lastOperation="Calculate Interest";
-                        }
-                        break;
+                case 4:
+                    if (ca instanceof CurrentAccount) {
+                        ca.calculateInterestRate();
+                        lastOperation = "Calculate Interest";
+                    } else {
+                        sa.calculateInterestRate();
+                        lastOperation = "Calculate Interest";
+                    }
+                    break;
 
-                    case 5:
-                        displayAccountDetails();
-                        lastOperation="Display Account Details";
-                        break;
+                case 5:
+                    displayAccountDetails();
+                    lastOperation = "Display Account Details";
+                    break;
 
-                    case 6:
-                        changePhoneNumber();
-                        lastOperation="Change Mobile Number";
-                        break;
+                case 6:
+                    changePhoneNumber();
+                    lastOperation = "Change Mobile Number";
+                    break;
 
-                    case 7:
-                        changeATMPin();
-                        lastOperation="Change ATM Pin";
-                        break;
+                case 7:
+                    changeATMPin();
+                    lastOperation = "Change ATM Pin";
+                    break;
 
-                    case 8:
-                        exit=true;
-                        System.out.println("You have choose Exit Option!");
-                        return;
+                case 8:
+                    exit = true;
+                    System.out.println("You have choose Exit Option!");
+                    return;
 
-                    default:
-                        System.out.println("Invalid Option.. Please try again");
-                }
-                System.out.println("Do you want to continue.. Press (Y)--> Yes and Press (N)--> No");
-                con = sc.next().charAt(0);
-            } while (con == 'Y' || con == 'y');
+                default:
+                    System.out.println("Invalid Option.. Please try again");
+            }
+            System.out.println("Do you want to continue.. Press (Y)--> Yes and Press (N)--> No");
+            con = sc.next().charAt(0);
+        }while (con == 'Y' || con == 'y') ;
 
-            char receipt=' ';
+            char receipt = ' ';
             System.out.println("Do you want Transaction Receipt? Press (Y)--> Yes and Press (N)--> No");
-            receipt=sc.next().charAt(0);
-            if(receipt=='y' || receipt=='Y'){
+            receipt = sc.next().charAt(0);
+            if (receipt == 'y' || receipt == 'Y') {
                 returnReceipt();
             }
-            else{
+            else {
                 System.out.println("Thank You for using JONI ATM!");
             }
-        }
+    }
 
     public void returnReceipt(){
             System.out.println("Welcome to Joni Bank ATM");
