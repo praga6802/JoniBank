@@ -1,8 +1,9 @@
 package com.joniatm;
-import com.jonibank.*;
 import com.jonibank.CurrentAccount;
 import com.jonibank.SavingsAccount;
 import com.jonibank.JoniBank;
+
+import javax.swing.*;
 import java.util.Scanner;
 
 
@@ -12,6 +13,7 @@ public class ATMOperations extends JoniATM{
     SavingsAccount sa;
     JoniBank j;
 
+    private static final int MAX_ATTEMPTS=3;
     String lastOperation="No Operation";
 
     public ATMOperations(CurrentAccount ca){
@@ -41,6 +43,68 @@ public class ATMOperations extends JoniATM{
         }
     }
 
+    //change ATM Pin in ATM @override changeATMPin() in ATMOperations()
+    public void changeATMPin() {
+        System.out.println("To change ATM Pin..");
+        int attempts = 1;
+        //Enter accno and ifsc code
+        while (attempts <= MAX_ATTEMPTS) {
+            System.out.println("Enter your JONI Bank Account Number: ");
+            String acno = sc.next();  // Read account number
+            System.out.println("Enter your Mobile Number: ");
+            String mob_no = sc.next();
+
+            //checking if the both acno and ifsc code is correct or not
+            if (acno.equals(getAccountNumber()) && mob_no.equals(getContactno())) {
+                System.out.println("Enter your Existing ATM Pin: ");
+                String epin = sc.next(); //getting from the user
+                sc.nextLine();
+                String atm_pin = getAtmpin(); //exisiting atmpin
+
+                //exisiting pin and saved pin is same or not
+                if (epin.equals(atm_pin)) {
+                    System.out.println("Enter your New ATM Pin: ");
+                    String npin = sc.next().trim();
+                    System.out.println("Re Enter your New ATM Pin: ");
+                    String rnpin=sc.next().trim();
+                    //checking the length of new ATM Pin
+                    if (npin.length() == 4) {
+
+                        //checking the new pin is matched with existing pin
+                        if (epin.equals(npin)) {
+                            System.out.println("Previous Pin should not matched with New Pin");
+                        }
+                        else {
+                            if (npin.equals(rnpin)) {
+                                atm_pin = npin;
+                                System.out.println("ATM Pin has been successfully changed..");
+                                break;
+                            }
+                            else {
+                                System.out.println("Re-Enter ATM Pin is not matching");
+                            }
+                        }
+                    }
+                    else {
+                        System.out.println("Length of ATM Pin is Invalid!");
+                    }
+                } else {
+                    System.out.println("Incorrect ATM Pin!");
+                }
+            }
+            else{
+                System.out.println("Please Enter correct credentials!");
+                System.out.println("Attempts left: "+(MAX_ATTEMPTS-attempts));
+                attempts++;
+            }
+        }
+        if (attempts >= MAX_ATTEMPTS) {
+            System.out.println("Maximum Attempts reached..Please try again later!");
+            return;
+        }
+    }
+
+
     int decision;
     double damount;
     double wamount;
@@ -49,8 +113,8 @@ public class ATMOperations extends JoniATM{
         boolean exit=false;
             char con=' ';
             do{
-                System.out.println("JONI ATM Operations");
-                System.out.println("Press 1->> Deposit Amount, Press 2--> WithDraw Amount, Press 3--> Check Balance, Press 4 --> Calculate Interest, Press 5 --> Account Details, Press 6 --> Return Receipt, Press 7 --> Change Phone Number, Press 8 --> Exit");
+                System.out.println("-- JONI ATM Operations --");
+                System.out.println("Press 1->> Deposit Amount, Press 2--> WithDraw Amount, Press 3--> Check Balance, Press 4 --> Calculate Interest, Press 5 --> Account Details, Press 6 --> Change Phone Number, Press 7 --> Change ATM Pin , Press 8 --> Exit ");
                 decision = sc.nextInt();
                 switch (decision) {
                     case 1:
@@ -117,12 +181,13 @@ public class ATMOperations extends JoniATM{
                         break;
 
                     case 6:
-                        returnReceipt();
+                        changePhoneNumber();
+                        lastOperation="Change Mobile Number";
                         break;
 
                     case 7:
-                        changePhoneNumber();
-                        lastOperation="Change Mobile Number";
+                        changeATMPin();
+                        lastOperation="Change ATM Pin";
                         break;
 
                     case 8:
@@ -136,7 +201,16 @@ public class ATMOperations extends JoniATM{
                 System.out.println("Do you want to continue.. Press (Y)--> Yes and Press (N)--> No");
                 con = sc.next().charAt(0);
             } while (con == 'Y' || con == 'y');
-            System.out.println("Thank You for using JONI ATM!");
+
+            char receipt=' ';
+            System.out.println("Do you want Transaction Receipt? Press (Y)--> Yes and Press (N)--> No");
+            receipt=sc.next().charAt(0);
+            if(receipt=='y' || receipt=='Y'){
+                returnReceipt();
+            }
+            else{
+                System.out.println("Thank You for using JONI ATM!");
+            }
         }
 
     public void returnReceipt(){
