@@ -12,9 +12,11 @@ public class BankOperations extends JoniBank{
     //Bank Operations Constructor- bank atm
     public BankOperations(String accountHolderName, String accountNumber, double balance,String branch_name, String IFSC_code, String contactno, String atmpin){
         super(accountHolderName,accountNumber,balance,branch_name,IFSC_code,contactno);
+        this.atmpin=atmpin;
     }
 
     public void depositAmount(double amount) {
+
         System.out.println("Account Number verifying...");
         String verify_no=super.verifyAccountNumber();
         if(verify_no.equals(accountNumber)) {
@@ -22,6 +24,7 @@ public class BankOperations extends JoniBank{
                 balance = balance + amount;
                 System.out.println("₹" + amount + " has been deposited successfully");
                 System.out.println("Current Balance="+balance);
+
             } else {
                 System.out.println("Please Enter Valid Amount!");
             }
@@ -70,6 +73,16 @@ public class BankOperations extends JoniBank{
         System.out.println("Current Balance: "+"₹"+balance);
     }
 
+    //view mini statement
+   /* public void viewMiniStatement(){
+        System.out.println("------- MINI STATEMENT ------");
+        System.out.println("Account Holder Name: "+accountHolderName);
+        System.out.println("Account Number: "+accountNumber);
+        if(balance>=0){
+            System.out.println("")
+        }
+    }*/
+
     CurrentAccount ca;
     BankMain j;
     //bank related operations
@@ -78,7 +91,7 @@ public class BankOperations extends JoniBank{
         char con;
         do{
             System.out.println("-- JONI Banking Operations --");
-            System.out.println("Press 1->> Deposit Amount, Press 2--> WithDraw Amount, Press 3--> Check Balance, Press 4 --> Calculate Interest, Press 5 --> Account Details, Press 6 --> Change Phone Number, Press 7 --> Exit");
+            System.out.println("Press 1->> Deposit Amount, Press 2--> WithDraw Amount, Press 3--> Check Balance, Press 4 --> Calculate Interest, Press 5 --> Account Details, Press 6 --> Change Phone Number, Press 7--> View Mini Statement, Press 8 --> Exit");
             System.out.println("Enter your option: ");
             int boption = sc.nextInt();
             switch(boption) {
@@ -120,7 +133,11 @@ public class BankOperations extends JoniBank{
                     changePhoneNumber();
                     break;
 
-                case 7:
+              /*  case 7:
+                    viewMiniStatement();
+                    break;*/
+
+                case 8:
                     exit=true;
                     System.out.println("You have choose Exit Option!");
                     break;
