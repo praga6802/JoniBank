@@ -68,6 +68,7 @@ public class BankMain {
                 System.out.println("Please Insert you ATM Card..");
                 System.out.println("Enter 4-digit ATM Pin");
                 String atm_pin = sc.next();
+
                 System.out.println("Select Account Type : 1.Savings Account, 2.Current Account");
                 int atmchoice = sc.nextInt();
                 sc.nextLine();
