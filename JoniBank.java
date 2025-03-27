@@ -1,6 +1,4 @@
 package com.jonibank;
-import javax.swing.*;
-import java.util.Map;
 import java.util.Scanner;
 public class JoniBank extends BankAdapter {
     //data hiding
