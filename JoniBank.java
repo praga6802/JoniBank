@@ -1,5 +1,6 @@
 package com.jonibank;
 import javax.swing.*;
+import java.util.Map;
 import java.util.Scanner;
 public class JoniBank extends BankAdapter {
     //data hiding
@@ -113,6 +114,7 @@ public class JoniBank extends BankAdapter {
     public void changePhoneNumber() {
         final int MAX_ATTEMPTS = 3;
         int attempts = 1;
+        int mattempts = 1;
         System.out.println("To change Phone Number..");
         System.out.println("Account Number verifying...");
         while (attempts <= MAX_ATTEMPTS) {
@@ -120,22 +122,39 @@ public class JoniBank extends BankAdapter {
             if (verify_no.equals(accountNumber)) {
                 System.out.println("Enter your New Mobile Number: ");
                 String contact_no = sc.next();
-                System.out.println("Re-Enter your New Mobile Number: ");
-                String rcontact_no = sc.next();
+
+                //checking the length of mobile number is 10.
                 if (contact_no.length() == 10) {
+
+                    //checking the new mobile number is already same as existing mobile number or not.
                     if (contact_no.equals(contactno)) {
                         System.out.println("Already registered with \"" + contact_no + "\" mobile number");
-                    } else {
-                        if (rcontact_no.equals(contact_no)) {
-                            System.out.println("Mobile Number has been changed from \"" + contactno + "\" to \"" + contact_no + "\"");
-                            contactno = contact_no;
-                            break;
-                        } else {
-                            System.out.println("Re- Entered Mobile number is not same..");
+                        break;
+                    }
+                    //if the new mobile number is not registered with exisiting mobile number means it is used to re enter the mobile number again..
+                    else {
+                        while (mattempts <= MAX_ATTEMPTS) {
+                            System.out.println("Re-Enter your New Mobile Number: ");
+                            String rcontact_no = sc.next();
+                            //it checks the re enter mobile number and new mobile number is same or not
+                            if (rcontact_no.equals(contact_no)) {
+                                System.out.println("Mobile Number has been changed from \"" + contactno + "\" to \"" + contact_no + "\"");
+                                contactno = contact_no;
+                                break;
+                            } else {
+                                
+                                //attempts for changing reentered mobile number
+                                System.out.println("Re- Entered Mobile number is not same..");
+                                System.out.println("Attempts left: "+(MAX_ATTEMPTS-mattempts));
+                                mattempts++;
+                                if(mattempts>3){
+                                    System.out.println("Too many attempts reached!");
+                                    break;
+                                }
+                            }
                         }
                     }
-                }
-                else {
+                } else {
                     System.out.println("Length of Mobile Number is Invalid!");
                 }
             }
@@ -145,7 +164,7 @@ public class JoniBank extends BankAdapter {
                 attempts++;
             }
         }
-        if(attempts>=MAX_ATTEMPTS){
+        if (attempts >= MAX_ATTEMPTS) {
             System.out.println("Maximum limit reached! Please try again later..");
         }
     }
