@@ -3,7 +3,6 @@ import com.jonibank.CurrentAccount;
 import com.jonibank.SavingsAccount;
 import com.jonibank.JoniBank;
 
-import javax.swing.*;
 import java.util.Scanner;
 
 
